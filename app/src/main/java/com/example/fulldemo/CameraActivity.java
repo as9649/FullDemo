@@ -51,11 +51,10 @@ public class CameraActivity extends AppCompatActivity {
     private String imageDate;
     private StorageReference storageReference;
     private StorageReference imageRef;
-
     private File localFile;
-
+    private boolean permission_granted=false;
     private ImageView imageView2;
-    private Button uploadButton2, downloadButton2;
+    private Button uploadButton2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,14 +63,18 @@ public class CameraActivity extends AppCompatActivity {
 
         imageView2=findViewById(R.id.imageView2);
         uploadButton2=findViewById(R.id.uploadButton2);
-        downloadButton2=findViewById(R.id.downloadButton2);
 
         storageReference= FirebaseStorage.getInstance().getReference();
-
+        askCameraPermissions();
         uploadButton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                askCameraPermissions();
+                if (permission_granted){
+                    TakePictureIntent();
+                }
+                else {
+                    Toast.makeText(CameraActivity.this, "Camera permission denied", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -80,7 +83,7 @@ public class CameraActivity extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
             ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, CAMERA_PERM_CODE);
         else
-            TakePictureIntent();
+            permission_granted=true;
     }
 
     @Override
@@ -89,9 +92,9 @@ public class CameraActivity extends AppCompatActivity {
 
         if (requestCode == REQUEST_IMAGE_CAPTURE) {
             if (!(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED))
-                Toast.makeText(this, "Gallery permission denied", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Camera permission denied", Toast.LENGTH_SHORT).show();
             else
-                TakePictureIntent();
+                permission_granted=true;
         }
     }
 
@@ -207,9 +210,9 @@ public class CameraActivity extends AppCompatActivity {
             case "Camera":
                 startActivity(new Intent(CameraActivity.this, CameraActivity.class));
                 break;
-//            case "Text":
-//                startActivity(new Intent(GalleryActivity.this, TextActivity.class));
-//                break;
+            case "Text":
+                startActivity(new Intent(CameraActivity.this, TextActivity.class));
+                break;
 //            case "Map":
 //                startActivity(new Intent(GalleryActivity.this, MapActivity.class));
 //                break;

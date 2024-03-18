@@ -36,24 +36,26 @@ import java.util.Objects;
 
 public class GalleryActivity extends AppCompatActivity {
     private static final int REQUEST_READ_EXTERNAL_STORAGE_PERMISSION = 101;
-    private int Gallery=1;
-
+    private final int Gallery=1;
+    private boolean permission_granted=false;
     private ImageView imageView1;
-    private Button uploadButton1, downloadButton1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery);
-// Eden metsika
-        imageView1=findViewById(R.id.imageView1);
-        uploadButton1=findViewById(R.id.uploadButton1);
-        downloadButton1=findViewById(R.id.downloadButton1);
 
+        imageView1=findViewById(R.id.imageView1);
+        Button uploadButton1 = findViewById(R.id.uploadButton1);
+
+        askStoragePermissions();
         uploadButton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                askStoragePermissions();
+                if (permission_granted)
+                    uploadFromGallery();
+                else
+                    Toast.makeText(GalleryActivity.this, "Gallery permission denied", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -62,7 +64,7 @@ public class GalleryActivity extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_READ_EXTERNAL_STORAGE_PERMISSION);
         else
-            uploadFromGallery();
+            permission_granted=true;
     }
 
     @Override
@@ -73,7 +75,7 @@ public class GalleryActivity extends AppCompatActivity {
             if (!(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED))
                 Toast.makeText(this, "Gallery permission denied", Toast.LENGTH_SHORT).show();
             else
-                uploadFromGallery();
+                permission_granted=true;
         }
     }
     public void uploadFromGallery() {
@@ -161,9 +163,9 @@ public class GalleryActivity extends AppCompatActivity {
             case "Camera":
                 startActivity(new Intent(GalleryActivity.this, CameraActivity.class));
                 break;
-//            case "Text":
-//                startActivity(new Intent(GalleryActivity.this, TextActivity.class));
-//                break;
+            case "Text":
+                startActivity(new Intent(GalleryActivity.this, TextActivity.class));
+                break;
 //            case "Map":
 //                startActivity(new Intent(GalleryActivity.this, MapActivity.class));
 //                break;
