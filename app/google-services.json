@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1039765627777",
+    "project_id": "fulldemo-fa181",
+    "storage_bucket": "fulldemo-fa181.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1039765627777:android:887923c80e5a31e2a6fe80",
+        "android_client_info": {
+          "package_name": "com.example.fulldemo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGDPQoc8UoUnyQ1W8DFdPoys6F2NcJWaU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
